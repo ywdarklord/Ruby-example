@@ -1,5 +1,6 @@
 Ruby-example
 ============
+本例演示一个网页上传的样例
 #搭建Ruby On Rails开发环境
 从此处下载 http://rubygems.org/pages/download RubyGems，然后解压并设置路径到下载好的文件，运行下面命令：
 
@@ -13,9 +14,11 @@ Ruby-example
 
 
 #通过Rails创建应用程序
+在Terminal运行下面命令：
+
     rails new uolpad
     
-这将创建一个upload工程
+这将在当前目录创建一个upload工程
 
     $ cd upload
     
@@ -25,6 +28,8 @@ Ruby-example
     bundle install
     
 #下载并配置Ruby-SDK
+[在此处下载七牛Ruby-SDK](https://github.com/qiniu/ruby-sdk)置于upload目录内。
+
 在upload文件目录下找到Gemfile文件，添加如下代码：
 
     gem 'qiniu-rs'
@@ -36,12 +41,13 @@ Ruby-example
 
     $ gem install qiniu-rs
     
-然后在在此应用程序目录中新建一个文件：YOUR_RAILS_APP/config/initializers/qiniu-rs.rb 然后添加如下代码：
+然后在在此应用程序目录中新建一个文件：“YOUR_RAILS_APP”/config/initializers/qiniu-rs.rb 然后添加如下代码：
     
-    Qiniu::RS.establish_connection! :access_key =>   YOUR_APP_ACCESS_KEY,
+    Qiniu::RS.establish_connection! :access_key => YOUR_APP_ACCESS_KEY,
                                     :secret_key => YOUR_APP_SECRET_KEY
                                     
 #创建上传页面
+在Terminal中输入如下命令创建一个视图：
 
     $ rails g controller home index
     $ rm public/index.html
@@ -64,7 +70,7 @@ rails将为你创建多个文件，其中包括 app/views/home/index.html.erb, �
      </html>
      <p>Find me in app/views/home/index.html.erb </p>
      
-这是一个嵌入ruby代码的html，token值将在home_controller.rb中生成并传送到html页面中，下面会详细叙述。然后你需要告诉rails你的实际首页在什么位置，打开并修改 config/router.rb:
+这是一个嵌入ruby代码的html，token值将在home_controller.rb中生成并传送到html页面中，下面会详细叙述。然后你需要告诉rails你的实际首页在什么位置，打开并修改 config/router.rb 如下：
 
      Blog::Application.routes.draw do
          match 'upload' => 'home#index'
@@ -85,3 +91,9 @@ rails将为你创建多个文件，其中包括 app/views/home/index.html.erb, �
 这将生成上传授权凭证(uploadToken),调用SDK提供的 Qiniu::RS.generate_upload_token函数来获取一个用于上传的 upload_token
 
 #运行服务器
+
+ 先转到在应用程序目录下($ cd upload)，运行以下命令:
+   
+    rails s
+    
+ 然后访问 localhost:3000/upload
